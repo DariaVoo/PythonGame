@@ -1,7 +1,11 @@
 import arcade
 
 SPRITE_SCALING = 0.5
-
+# Для enemy
+SPRITE_NATIVE_SIZE = 128
+SPRITE_SIZE = int(SPRITE_NATIVE_SIZE * SPRITE_SCALING)
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
 
 def create_lvl(wall_list: arcade.SpriteList):
     """
@@ -19,4 +23,12 @@ def create_lvl(wall_list: arcade.SpriteList):
         wall = arcade.Sprite(":resources:images/tiles/boxCrate_double.png", SPRITE_SCALING)
         wall.center_x = 465
         wall.center_y = y
+        wall_list.append(wall)
+
+    # Draw the walls on the bottom Добавляем землю
+    for x in range(0, SCREEN_WIDTH, SPRITE_SIZE):
+        wall = arcade.Sprite(":resources:images/tiles/grassMid.png", SPRITE_SCALING)
+
+        wall.bottom = 0
+        wall.left = x
         wall_list.append(wall)
