@@ -2,6 +2,7 @@ import arcade
 import os
 
 # Число для уменьшения изображения
+from enemy import create_enemy2, create_enemy1
 from level import create_lvl
 from player import create_player
 
@@ -56,16 +57,9 @@ class MyGame(arcade.Window):
         # Set up the player
         self.player_sprite = create_player()
         self.player_list.append(self.player_sprite)
-
-        # -- Draw an enemy on the ground
-        enemy = arcade.Sprite(":resources:images/enemies/wormGreen.png", SPRITE_SCALING)
-
-        enemy.bottom = SPRITE_SIZE
-        enemy.left = SPRITE_SIZE * 2
-
-        # Set enemy initial speed
-        enemy.change_x = 2
-        self.enemy_list.append(enemy)
+        # Set up the player
+        self.enemy_list.append(create_enemy1())
+        self.enemy_list.append(create_enemy2())
 
 
         # -- Set up the walls
@@ -115,8 +109,22 @@ class MyGame(arcade.Window):
     def on_update(self, delta_time):
         """ Movement and game logic """
 
-        # Call update on all sprites (The sprites don't do much in this
-        # example though.)
+        # Move the enemies
+        self.enemy_list.update()
+
+        # Check each enemy
+        for enemy in self.enemy_list:
+            # If the enemy hit a wall, reverse
+            if len(arcade.check_for_collision_with_list(enemy, self.wall_list)) > 0:
+                enemy.change_x *= -1
+            # If the enemy hit the left boundary, reverse
+            elif enemy.boundary_left is not None and enemy.left < enemy.boundary_left:
+                enemy.change_x *= -1
+            # If the enemy hit the right boundary, reverse
+            elif enemy.boundary_right is not None and enemy.right > enemy.boundary_right:
+                enemy.change_x *= -1
+
+        # Обновляем игрока использую физический движок
         self.physics_engine.update()
 
 
