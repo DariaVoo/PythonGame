@@ -2,7 +2,7 @@ import arcade
 import os
 
 # Число для уменьшения изображения
-from enemy import create_enemy2, create_enemy1
+from enemy import create_enemy2, create_enemy1, Worm
 from level import create_lvl
 from player import Player
 
@@ -60,8 +60,8 @@ class MyGame(arcade.Window):
         self.player_sprite = Player()
         self.player_list.append(self.player_sprite)
         # Set up the player
-        self.enemy_list.append(create_enemy1())
-        self.enemy_list.append(create_enemy2())
+        self.enemy_list.append(Worm(1))
+        self.enemy_list.append(Worm(2))
 
 
         # -- Set up the walls
@@ -110,15 +110,7 @@ class MyGame(arcade.Window):
 
             # Check each enemy
             for enemy in self.enemy_list:
-                # If the enemy hit a wall, reverse
-                if len(arcade.check_for_collision_with_list(enemy, self.wall_list)) > 0:
-                    enemy.change_x *= -1
-                # If the enemy hit the left boundary, reverse
-                elif enemy.boundary_left is not None and enemy.left < enemy.boundary_left:
-                    enemy.change_x *= -1
-                # If the enemy hit the right boundary, reverse
-                elif enemy.boundary_right is not None and enemy.right > enemy.boundary_right:
-                    enemy.change_x *= -1
+                enemy.move(self.wall_list)
 
             # Обновляем игрока используя физический движок
             self.physics_engine.update()
