@@ -2,22 +2,10 @@ import arcade
 import os
 
 # Число для уменьшения изображения
-from enemy import create_enemy2, create_enemy1, Worm
+from enemies.worm import Worm
 from level import create_lvl
 from player import Player
-
-SPRITE_SCALING = 0.5
-GRAVITY = .9 * SPRITE_SCALING
-# Для enemy
-SPRITE_NATIVE_SIZE = 128
-SPRITE_SIZE = int(SPRITE_NATIVE_SIZE * SPRITE_SCALING)
-
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
-SCREEN_TITLE = "Sprite Move with Walls Example"
-
-MOVEMENT_SPEED = 5
-JUMP_SPEED = 14
+from constats import *
 
 
 class MyGame(arcade.Window):

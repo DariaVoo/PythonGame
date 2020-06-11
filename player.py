@@ -1,9 +1,6 @@
 import arcade
 
-
-MOVEMENT_SPEED = 5
-JUMP_SPEED = 14
-SPRITE_SCALING = 0.5
+from constats import SPRITE_SCALING, MOVEMENT_SPEED, JUMP_SPEED
 
 
 class Player(arcade.Sprite):
