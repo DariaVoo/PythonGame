@@ -3,7 +3,6 @@ import os
 
 # Число для уменьшения изображения
 from enemies.enemyFactory import create_enemies
-from enemies.worm import Worm
 from level import create_lvl
 from player import Player
 from constats import *
@@ -48,10 +47,8 @@ class MyGame(arcade.Window):
         # Set up the player
         self.player_sprite = Player()
         self.player_list.append(self.player_sprite)
-        # Set up the player
+        # Set up the enemies
         self.enemy_list = create_enemies([1, 2])
-        # self.enemy_list.append(Worm(1))
-        # self.enemy_list.append(Worm(2))
 
 
         # -- Set up the walls
