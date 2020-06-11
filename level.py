@@ -7,6 +7,7 @@ SPRITE_SIZE = int(SPRITE_NATIVE_SIZE * SPRITE_SCALING)
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 
+
 def create_lvl(wall_list: arcade.SpriteList):
     """
     Создание карты уровня. По факту - наполнение wall_list

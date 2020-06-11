@@ -4,7 +4,7 @@ import os
 # Число для уменьшения изображения
 from enemy import create_enemy2, create_enemy1
 from level import create_lvl
-from player import create_player
+from player import Player
 
 SPRITE_SCALING = 0.5
 GRAVITY = .9 * SPRITE_SCALING
@@ -43,7 +43,7 @@ class MyGame(arcade.Window):
         self.enemy_list: arcade.SpriteList = None
 
         # Set up the player
-        self.player_sprite = None
+        self.player_sprite: Player = None
         self.physics_engine = None
 
         self.game_over = False
@@ -57,7 +57,7 @@ class MyGame(arcade.Window):
         self.enemy_list = arcade.SpriteList()
 
         # Set up the player
-        self.player_sprite = create_player()
+        self.player_sprite = Player()
         self.player_list.append(self.player_sprite)
         # Set up the player
         self.enemy_list.append(create_enemy1())
@@ -90,15 +90,7 @@ class MyGame(arcade.Window):
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed. """
 
-        if key == arcade.key.UP:
-            if self.physics_engine.can_jump():
-                self.player_sprite.change_y = JUMP_SPEED
-        elif key == arcade.key.DOWN:
-            self.player_sprite.change_y = -MOVEMENT_SPEED
-        elif key == arcade.key.LEFT:
-            self.player_sprite.change_x = -MOVEMENT_SPEED
-        elif key == arcade.key.RIGHT:
-            self.player_sprite.change_x = MOVEMENT_SPEED
+        self.player_sprite.move(key, self.physics_engine.can_jump())
 
     def on_key_release(self, key, modifiers):
         """Called when the user releases a key. """
