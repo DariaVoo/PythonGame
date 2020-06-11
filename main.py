@@ -120,7 +120,7 @@ class MyGame(arcade.Window):
                 elif enemy.boundary_right is not None and enemy.right > enemy.boundary_right:
                     enemy.change_x *= -1
 
-            # Обновляем игрока использую физический движок
+            # Обновляем игрока используя физический движок
             self.physics_engine.update()
 
             # See if the player hit a worm. If so, game over.

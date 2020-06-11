@@ -30,3 +30,11 @@ def create_enemy2():
     enemy.boundary_left = SPRITE_SIZE * 3
     enemy.change_x = 2
     return enemy
+
+class Enemy(arcade.Sprite):
+    def __init__(self, img, scale, size, x, y):
+        super().__init__(img, scale)
+        self.bottom = y
+        self.left = x
+
+
