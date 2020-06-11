@@ -7,7 +7,6 @@ class Player(arcade.Sprite):
     """
     @x, @y - start position
     """
-
     def __init__(self, x=600, y=400):
         super().__init__(":resources:images/animated_characters/female_person/femalePerson_idle.png",
                          SPRITE_SCALING)

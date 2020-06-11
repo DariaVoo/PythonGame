@@ -33,8 +33,11 @@ class MyGame(arcade.Window):
         # Set up the player
         self.player_sprite: Player = None
         self.physics_engine = None
-
         self.game_over = False
+
+        # sсroll(move camera)
+        self.view_left = 0
+        self.view_bottom = 0
 
     def setup(self):
         """ Set up the game and initialize the variables. """
@@ -50,8 +53,7 @@ class MyGame(arcade.Window):
         # Set up the enemies
         self.enemy_list = create_enemies([1, 2])
 
-
-        # -- Set up the walls
+        # Set up the walls
         create_lvl(self.wall_list)
 
         # Физический движок для платформера
@@ -105,6 +107,43 @@ class MyGame(arcade.Window):
             # See if the player hit a worm. If so, game over.
             if len(arcade.check_for_collision_with_list(self.player_sprite, self.enemy_list)) > 0:
                 self.game_over = True
+
+            # --- Manage Scrolling ---
+            # Track if we need to change the view port
+            changed = False
+
+            # Scroll left
+            left_bndry = self.view_left + VIEWPORT_LEFT_MARGIN
+            if self.player_sprite.left < left_bndry:
+                self.view_left -= left_bndry - self.player_sprite.left
+                changed = True
+
+            # Scroll right
+            right_bndry = self.view_left + SCREEN_WIDTH - VIEWPORT_RIGHT_MARGIN
+            if self.player_sprite.right > right_bndry:
+                self.view_left += self.player_sprite.right - right_bndry
+                changed = True
+
+            # Scroll up
+            top_bndry = self.view_bottom + SCREEN_HEIGHT - VIEWPORT_MARGIN_TOP
+            if self.player_sprite.top > top_bndry:
+                self.view_bottom += self.player_sprite.top - top_bndry
+                changed = True
+
+            # Scroll down
+            bottom_bndry = self.view_bottom + VIEWPORT_MARGIN_BOTTOM
+            if self.player_sprite.bottom < bottom_bndry:
+                self.view_bottom -= bottom_bndry - self.player_sprite.bottom
+                changed = True
+
+            # If we need to scroll, go ahead and do it.
+            if changed:
+                self.view_left = int(self.view_left)
+                self.view_bottom = int(self.view_bottom)
+                arcade.set_viewport(self.view_left,
+                                    SCREEN_WIDTH + self.view_left,
+                                    self.view_bottom,
+                                    SCREEN_HEIGHT + self.view_bottom)
 
 
 def main():
