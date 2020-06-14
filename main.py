@@ -6,6 +6,7 @@ from enemies.enemyFactory import create_enemies
 from level import create_lvl
 from player import Player
 from constats import *
+from scroll_manage import scroll_manage
 
 
 class MyGame(arcade.Window):
@@ -110,31 +111,8 @@ class MyGame(arcade.Window):
 
             # --- Manage Scrolling ---
             # Track if we need to change the view port
-            changed = False
-
-            # Scroll left
-            left_bndry = self.view_left + VIEWPORT_LEFT_MARGIN
-            if self.player_sprite.left < left_bndry:
-                self.view_left -= left_bndry - self.player_sprite.left
-                changed = True
-
-            # Scroll right
-            right_bndry = self.view_left + SCREEN_WIDTH - VIEWPORT_RIGHT_MARGIN
-            if self.player_sprite.right > right_bndry:
-                self.view_left += self.player_sprite.right - right_bndry
-                changed = True
-
-            # Scroll up
-            top_bndry = self.view_bottom + SCREEN_HEIGHT - VIEWPORT_MARGIN_TOP
-            if self.player_sprite.top > top_bndry:
-                self.view_bottom += self.player_sprite.top - top_bndry
-                changed = True
-
-            # Scroll down
-            bottom_bndry = self.view_bottom + VIEWPORT_MARGIN_BOTTOM
-            if self.player_sprite.bottom < bottom_bndry:
-                self.view_bottom -= bottom_bndry - self.player_sprite.bottom
-                changed = True
+            changed, self.view_left, self.view_bottom = scroll_manage(self.player_sprite,
+                                                                      self.view_left, self.view_bottom)
 
             # If we need to scroll, go ahead and do it.
             if changed:
