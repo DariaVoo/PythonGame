@@ -1,19 +1,22 @@
 import arcade
 
 from ability.bullet import Bullet
-from constants import SPRITE_SCALING, MOVEMENT_SPEED, JUMP_SPEED, SCREEN_HEIGHT
+from ability.rock import Rock
+from constants import SPRITE_SCALING, MOVEMENT_SPEED, JUMP_SPEED, SCREEN_HEIGHT, COUNT_TYPE_ENEMY
 
 
 class Player(arcade.Sprite):
     """
     @x, @y - start position
     """
+
     def __init__(self, x=600, y=400):
         super().__init__(":resources:images/animated_characters/female_person/femalePerson_idle.png",
                          SPRITE_SCALING)
         self.center_x = x
         self.center_y = y
         self.ability_list = arcade.SpriteList()
+        self.active_ability_type = 0
 
     def move(self, key, jump):
         if key == arcade.key.UP:
@@ -27,10 +30,24 @@ class Player(arcade.Sprite):
             self.change_x = MOVEMENT_SPEED
 
     def add_ability(self):
-        bullet = Bullet(self.center_x, self.center_y)
-        self.ability_list.append(bullet)
+        if self.active_ability_type == 0:
+            bullet = Bullet(self.center_x, self.center_y)
+            self.ability_list.append(bullet)
+        elif self.active_ability_type == 1:
+            bullet2 = Rock(self.center_x, self.center_y)
+            self.ability_list.append(bullet2)
+
+    def next_ability(self):
+        index = self.active_ability_type + 1
+        if index < COUNT_TYPE_ENEMY:
+            self.active_ability_type = index
+        else:
+            self.active_ability_type = 0
 
     def attack(self, enemy_list, score, explosion_texture_list, explosions_list):
+        if len(self.ability_list) == 0:
+            return 0
+
         # Loop through each bullet
         for bullet in self.ability_list:
 

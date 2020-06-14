@@ -17,7 +17,8 @@ class InstructionView(arcade.View):
         arcade.start_render()
         arcade.draw_text("Instructions Screen", SCREEN_WIDTH/2, SCREEN_HEIGHT/2,
                          arcade.color.BLACK, font_size=50, anchor_x="center")
-        arcade.draw_text("Press Escape to out\nClick to advance", SCREEN_WIDTH/2, SCREEN_HEIGHT/2-75,
+        arcade.draw_text("Press Escape to out\nPress Enter to change type ability\nClick to advance",
+                         SCREEN_WIDTH/2, SCREEN_HEIGHT/2-75,
                          arcade.color.GRAY, font_size=20, anchor_x="center")
 
     def on_mouse_press(self, _x, _y, _button, _modifiers):

@@ -121,6 +121,8 @@ class GameView(arcade.View):
             self.player_sprite.add_ability()
         elif key == arcade.key.ESCAPE:
             self.game_over = True
+        elif key == arcade.key.ENTER:
+            self.player_sprite.next_ability()
 
     def on_update(self, delta_time):
         """ Movement and game logic """
