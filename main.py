@@ -30,6 +30,7 @@ class MyGame(arcade.Window):
         self.wall_list: arcade.SpriteList = None
         self.player_list: arcade.SpriteList = None
         self.enemy_list: arcade.SpriteList = None
+        self.bullet_list: arcade.SpriteList = None  # -> player
 
         # Set up the player
         self.player_sprite: Player = None
@@ -51,11 +52,13 @@ class MyGame(arcade.Window):
         self.wall_list = arcade.SpriteList()  # Список стен, через которые игрок не может проходить
         self.enemy_list = arcade.SpriteList()
 
+        self.bullet_list = arcade.SpriteList()
+
         # Set up the player
         self.player_sprite = Player()
         self.player_list.append(self.player_sprite)
         # Set up the enemies
-        self.enemy_list = create_enemies([1, 2])
+        self.enemy_list = create_enemies([1, 2, 3])
 
         # Set up the walls
         create_lvl(self.wall_list, self.coin_list)
@@ -81,6 +84,8 @@ class MyGame(arcade.Window):
         self.player_list.draw()
         self.enemy_list.draw()
 
+        self.bullet_list.draw()
+
         # Draw our score on the screen, scrolling it with the viewport
         score_text = f"Score: {self.score}"
         arcade.draw_text(score_text, 10 + self.view_left, 10 + self.view_bottom,
@@ -98,9 +103,28 @@ class MyGame(arcade.Window):
             self.player_sprite.change_y = 0
         elif key == arcade.key.LEFT or key == arcade.key.RIGHT:
             self.player_sprite.change_x = 0
+        elif key == arcade.key.SPACE:
+            # Create a bullet
+            bullet = arcade.Sprite(":resources:images/space_shooter/laserBlue01.png", SPRITE_SCALING_LASER)
+
+            # The image points to the right, and we want it to point up. So
+            # rotate it.
+            bullet.angle = 0
+
+            # Give the bullet a speed
+            bullet.change_x = BULLET_SPEED
+
+            # Position the bullet
+            bullet.center_x = self.player_sprite.center_x
+            bullet.center_y = self.player_sprite.center_y
+
+            # Add the bullet to the appropriate lists
+            self.bullet_list.append(bullet)
 
     def on_update(self, delta_time):
         """ Movement and game logic """
+
+        self.bullet_list.update()
 
         # Update the player based on the physics engine
         if not self.game_over:
@@ -126,6 +150,25 @@ class MyGame(arcade.Window):
                 # Remove the coin
                 coin.remove_from_sprite_lists()
                 self.score += 1
+
+            # Loop through each bullet
+            for bullet in self.bullet_list:
+
+                # Check this bullet to see if it hit a coin
+                hit_list = arcade.check_for_collision_with_list(bullet, self.enemy_list)
+
+                # If it did, get rid of the bullet
+                if len(hit_list) > 0:
+                    bullet.remove_from_sprite_lists()
+
+                # For every coin we hit, add to the score and remove the coin
+                for enemy in hit_list:
+                    enemy.remove_from_sprite_lists()
+                    self.score += 1
+
+                # If the bullet flies off-screen, remove it.
+                if bullet.bottom > SCREEN_HEIGHT:
+                    bullet.remove_from_sprite_lists()
 
             # --- Manage Scrolling ---
             # Track if we need to change the view port

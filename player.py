@@ -12,7 +12,6 @@ class Player(arcade.Sprite):
                          SPRITE_SCALING)
         self.center_x = x
         self.center_y = y
-        # self.lives = 5
 
     def move(self, key, jump):
         if key == arcade.key.UP:

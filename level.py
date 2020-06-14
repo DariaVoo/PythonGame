@@ -1,6 +1,8 @@
+import random
+
 import arcade
 
-from constats import COIN_SCALING
+from constats import SPRITE_SCALING_COIN
 
 SPRITE_SCALING = 0.4
 # Для enemy
@@ -53,10 +55,17 @@ def create_lvl(wall_list: arcade.SpriteList, coin_list: arcade.SpriteList):
         x = 0  # на каждой новой строчке начинаем с нуля
 
     # Ставим монеты на карту
-    for x in range(SPRITE_SIZE, 1250 - SPRITE_SIZE, 128):
-        coin = arcade.Sprite(":resources:images/items/coinGold.png", COIN_SCALING)
-        coin.center_x = x
-        coin.center_y = 96
+    # Create the coins
+    for i in range(15):
+        # Create the coin instance
+        # Coin image from kenney.nl
+        coin = arcade.Sprite(":resources:images/items/coinGold.png", SPRITE_SCALING_COIN)
+
+        # Position the coin
+        coin.center_x = random.randrange(SCREEN_WIDTH)
+        coin.center_y = random.randrange(120, SCREEN_HEIGHT)
+
+        # Add the coin to the lists
         coin_list.append(coin)
 
     # # Draw the walls on the bottom Добавляем землю
