@@ -3,9 +3,10 @@ import os
 
 # Число для уменьшения изображения
 from enemies.enemyFactory import create_enemies
+from explosion import Explosion
 from level import create_lvl
 from player import Player
-from constats import *
+from constants import *
 from scroll_manage import scroll_manage
 
 
@@ -30,6 +31,7 @@ class MyGame(arcade.Window):
         self.wall_list: arcade.SpriteList = None
         self.player_list: arcade.SpriteList = None
         self.enemy_list: arcade.SpriteList = None
+        self.explosions_list = None
         self.bullet_list: arcade.SpriteList = None  # -> player
 
         # Set up the player
@@ -39,9 +41,23 @@ class MyGame(arcade.Window):
         self.score = 0
         self.game_over = False
 
-        # sсroll(move camera)
+        # sсroll (move camera)
         self.view_left = 0
         self.view_bottom = 0
+
+        # Pre-load the animation frames. We don't do this in the __init__
+        # of the explosion sprite because it
+        # takes too long and would cause the game to pause.
+        self.explosion_texture_list = []
+
+        columns = 16
+        count = 60
+        sprite_width = 256
+        sprite_height = 256
+        file_name = ":resources:images/spritesheets/explosion.png"
+
+        # Load the explosions from a sprite sheet
+        self.explosion_texture_list = arcade.load_spritesheet(file_name, sprite_width, sprite_height, columns, count)
 
     def setup(self):
         """ Set up the game and initialize the variables. """
@@ -51,8 +67,7 @@ class MyGame(arcade.Window):
         self.player_list = arcade.SpriteList()
         self.wall_list = arcade.SpriteList()  # Список стен, через которые игрок не может проходить
         self.enemy_list = arcade.SpriteList()
-
-        self.bullet_list = arcade.SpriteList()
+        self.explosions_list = arcade.SpriteList()
 
         # Set up the player
         self.player_sprite = Player()
@@ -73,8 +88,6 @@ class MyGame(arcade.Window):
         """
         Render the screen.
         """
-
-        # This command has to happen before we start drawing
         # Очищаем окно и начинаем отрисовку
         arcade.start_render()
 
@@ -83,8 +96,9 @@ class MyGame(arcade.Window):
         self.coin_list.draw()
         self.player_list.draw()
         self.enemy_list.draw()
+        self.explosions_list.draw()
 
-        self.bullet_list.draw()
+        self.player_sprite.ability_list.draw()
 
         # Draw our score on the screen, scrolling it with the viewport
         score_text = f"Score: {self.score}"
@@ -104,27 +118,12 @@ class MyGame(arcade.Window):
         elif key == arcade.key.LEFT or key == arcade.key.RIGHT:
             self.player_sprite.change_x = 0
         elif key == arcade.key.SPACE:
-            # Create a bullet
-            bullet = arcade.Sprite(":resources:images/space_shooter/laserBlue01.png", SPRITE_SCALING_LASER)
-
-            # The image points to the right, and we want it to point up. So
-            # rotate it.
-            bullet.angle = 0
-
-            # Give the bullet a speed
-            bullet.change_x = BULLET_SPEED
-
-            # Position the bullet
-            bullet.center_x = self.player_sprite.center_x
-            bullet.center_y = self.player_sprite.center_y
-
-            # Add the bullet to the appropriate lists
-            self.bullet_list.append(bullet)
+            self.player_sprite.add_ability()
 
     def on_update(self, delta_time):
         """ Movement and game logic """
-
-        self.bullet_list.update()
+        self.player_sprite.ability_list.update()
+        self.explosions_list.update()
 
         # Update the player based on the physics engine
         if not self.game_over:
@@ -151,24 +150,9 @@ class MyGame(arcade.Window):
                 coin.remove_from_sprite_lists()
                 self.score += 1
 
-            # Loop through each bullet
-            for bullet in self.bullet_list:
-
-                # Check this bullet to see if it hit a coin
-                hit_list = arcade.check_for_collision_with_list(bullet, self.enemy_list)
-
-                # If it did, get rid of the bullet
-                if len(hit_list) > 0:
-                    bullet.remove_from_sprite_lists()
-
-                # For every coin we hit, add to the score and remove the coin
-                for enemy in hit_list:
-                    enemy.remove_from_sprite_lists()
-                    self.score += 1
-
-                # If the bullet flies off-screen, remove it.
-                if bullet.bottom > SCREEN_HEIGHT:
-                    bullet.remove_from_sprite_lists()
+            # Попали ли во врага
+            self.score = self.player_sprite.attack(self.enemy_list, self.score,
+                                                   self.explosion_texture_list, self.explosions_list)
 
             # --- Manage Scrolling ---
             # Track if we need to change the view port

@@ -1,5 +1,5 @@
 from enemies.enemy import Enemy
-from constats import SPRITE_SIZE, SPRITE_SCALING
+from constants import SPRITE_SIZE, SPRITE_SCALING
 
 
 class Worm(Enemy):

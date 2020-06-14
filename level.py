@@ -2,7 +2,7 @@ import random
 
 import arcade
 
-from constats import SPRITE_SCALING_COIN
+from constants import SPRITE_SCALING_COIN
 
 SPRITE_SCALING = 0.4
 # Для enemy
