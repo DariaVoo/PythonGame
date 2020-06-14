@@ -1,5 +1,7 @@
 import arcade
 
+from constats import COIN_SCALING
+
 SPRITE_SCALING = 0.4
 # Для enemy
 SPRITE_NATIVE_SIZE = 128
@@ -30,7 +32,7 @@ lvl1 = [
     "-------------------------"]
 
 
-def create_lvl(wall_list: arcade.SpriteList):
+def create_lvl(wall_list: arcade.SpriteList, coin_list: arcade.SpriteList):
     """
     Создание карты уровня. По факту - наполнение wall_list
     !!!! карта строится вверх ногами (если смотреть на массив)
@@ -49,6 +51,13 @@ def create_lvl(wall_list: arcade.SpriteList):
             x += wall._get_width()  # блоки платформы ставятся на ширине блоков
         y += wall._get_height()  # то же самое и с высотой
         x = 0  # на каждой новой строчке начинаем с нуля
+
+    # Ставим монеты на карту
+    for x in range(SPRITE_SIZE, 1250 - SPRITE_SIZE, 128):
+        coin = arcade.Sprite(":resources:images/items/coinGold.png", COIN_SCALING)
+        coin.center_x = x
+        coin.center_y = 96
+        coin_list.append(coin)
 
     # # Draw the walls on the bottom Добавляем землю
     # for x in range(0, SCREEN_WIDTH, SPRITE_SIZE):

@@ -32,4 +32,13 @@ def scroll_manage(player_sprite: arcade.Sprite, view_left, view_bottom):
         view_bottom -= bottom_bndry - player_sprite.bottom
         changed = True
 
-    return changed, view_left, view_bottom
+    # If we need to scroll, go ahead and do it.
+    if changed:
+        view_left = int(view_left)
+        view_bottom = int(view_bottom)
+        arcade.set_viewport(view_left,
+                            SCREEN_WIDTH + view_left,
+                            view_bottom,
+                            SCREEN_HEIGHT + view_bottom)
+
+    return view_left, view_bottom

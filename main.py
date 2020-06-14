@@ -34,6 +34,8 @@ class MyGame(arcade.Window):
         # Set up the player
         self.player_sprite: Player = None
         self.physics_engine = None
+
+        self.score = 0
         self.game_over = False
 
         # sсroll(move camera)
@@ -44,6 +46,7 @@ class MyGame(arcade.Window):
         """ Set up the game and initialize the variables. """
 
         # Sprite lists
+        self.coin_list = arcade.SpriteList()
         self.player_list = arcade.SpriteList()
         self.wall_list = arcade.SpriteList()  # Список стен, через которые игрок не может проходить
         self.enemy_list = arcade.SpriteList()
@@ -55,7 +58,7 @@ class MyGame(arcade.Window):
         self.enemy_list = create_enemies([1, 2])
 
         # Set up the walls
-        create_lvl(self.wall_list)
+        create_lvl(self.wall_list, self.coin_list)
 
         # Физический движок для платформера
         self.physics_engine = arcade.PhysicsEnginePlatformer(self.player_sprite, self.wall_list, GRAVITY)
@@ -74,8 +77,14 @@ class MyGame(arcade.Window):
 
         # Draw all the sprites.
         self.wall_list.draw()
+        self.coin_list.draw()
         self.player_list.draw()
         self.enemy_list.draw()
+
+        # Draw our score on the screen, scrolling it with the viewport
+        score_text = f"Score: {self.score}"
+        arcade.draw_text(score_text, 10 + self.view_left, 10 + self.view_bottom,
+                         arcade.csscolor.WHITE, 18)
 
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed. """
@@ -109,19 +118,19 @@ class MyGame(arcade.Window):
             if len(arcade.check_for_collision_with_list(self.player_sprite, self.enemy_list)) > 0:
                 self.game_over = True
 
+            # See if we hit any coins
+            coin_hit_list = arcade.check_for_collision_with_list(self.player_sprite,
+                                                                 self.coin_list)
+            # Loop through each coin we hit (if any) and remove it
+            for coin in coin_hit_list:
+                # Remove the coin
+                coin.remove_from_sprite_lists()
+                self.score += 1
+
             # --- Manage Scrolling ---
             # Track if we need to change the view port
-            changed, self.view_left, self.view_bottom = scroll_manage(self.player_sprite,
-                                                                      self.view_left, self.view_bottom)
-
-            # If we need to scroll, go ahead and do it.
-            if changed:
-                self.view_left = int(self.view_left)
-                self.view_bottom = int(self.view_bottom)
-                arcade.set_viewport(self.view_left,
-                                    SCREEN_WIDTH + self.view_left,
-                                    self.view_bottom,
-                                    SCREEN_HEIGHT + self.view_bottom)
+            self.view_left, self.view_bottom = scroll_manage(self.player_sprite,
+                                                             self.view_left, self.view_bottom)
 
 
 def main():
