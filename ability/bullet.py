@@ -1,8 +1,6 @@
-import arcade
-
 from ability.ability import Ability
+from ability.explosion import Explosion
 from constants import BULLET_SPEED, SPRITE_SCALING_LASER
-from explosion import Explosion
 
 
 class Bullet(Ability):
