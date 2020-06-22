@@ -68,24 +68,16 @@ class GameView(arcade.View):
         """ Set up the game and initialize the variables. """
 
         # Sprite lists
-        self.coin_list = arcade.SpriteList()
         self.player_list = arcade.SpriteList()
-        self.wall_list = arcade.SpriteList()  # Список стен, через которые игрок не может проходить
-        self.enemy_list = arcade.SpriteList()
         self.explosions_list = arcade.SpriteList()
-
-        # ДОЛЖНО ГЕНЕРИРОВАТЬСЯ
-        pos_ability = [Position(200, 400, 1), Position(700, 300, 2)]
 
         # Set up the player
         self.player_sprite = Player()
         self.player_list.append(self.player_sprite)
         # Set up the enemies
-        self.enemy_list = create_enemies([1, 2, 3])
-        self.ability_list = ability_factory(pos_ability)
 
         # Создаём уровень
-        create_lvl(self.wall_list, self.coin_list, self.level)
+        self.wall_list, self.coin_list, self.ability_list, self.enemy_list = create_lvl(self.level)
 
         # Физический движок для платформера
         self.physics_engine = arcade.PhysicsEnginePlatformer(self.player_sprite, self.wall_list, GRAVITY)
@@ -130,7 +122,6 @@ class GameView(arcade.View):
         """Called when the user releases a key. """
         self.player_sprite.stop(key)
 
-
     def on_update(self, delta_time):
         """ Movement and game logic """
         self.time_taken += delta_time
@@ -142,7 +133,9 @@ class GameView(arcade.View):
         if self.player_sprite.right >= END_OF_MAP:
             if self.level < self.max_level:
                 self.level += 1
-                create_lvl(self.wall_list, self.coin_list, self.level)
+                self.wall_list, self.coin_list, self.ability_list, self.enemy_list = create_lvl(self.level)
+                self.physics_engine = arcade.PhysicsEnginePlatformer(self.player_sprite,
+                                                                     self.wall_list, GRAVITY)
                 self.player_sprite.center_x = 128
                 self.player_sprite.center_y = 64
                 self.player_sprite.change_x = 0

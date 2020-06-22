@@ -2,7 +2,10 @@ import random
 
 import arcade
 
+from ability.abilityFactory import ability_factory
 from constants import SPRITE_SCALING_COIN
+from enemies.enemyFactory import create_enemies
+from position import Position
 
 SPRITE_SCALING = 0.4
 # Для enemy
@@ -11,7 +14,7 @@ SPRITE_SIZE = int(SPRITE_NATIVE_SIZE * SPRITE_SCALING)
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 
-END_OF_MAP = 25 * 51.2 # ЭТО НУЖНО ИСПРАВИТЬ сейча это просто колво блоков на wall.ghet_width
+END_OF_MAP = 25 * 51.2  # ЭТО НУЖНО ИСПРАВИТЬ сейча это просто колво блоков на wall.ghet_width
 lvl1 = [
     "-------------------------",
     "-                       -",
@@ -57,7 +60,7 @@ lvl2 = [
     "-------------------------"]
 
 
-def create_lvl(wall_list: arcade.SpriteList, coin_list: arcade.SpriteList, lvl=1):
+def create_lvl(lvl=1):
     """
     Создание карты уровня. По факту - наполнение wall_list
     !!!! карта строится вверх ногами (если смотреть на массив)
@@ -65,11 +68,12 @@ def create_lvl(wall_list: arcade.SpriteList, coin_list: arcade.SpriteList, lvl=1
     level = lvl1 if lvl == 1 else lvl2
     box = ":resources:images/tiles/boxCrate_double.png" if lvl == 1 else ":resources:images/tiles/brickGrey.png"
 
+    wall_list = arcade.SpriteList()
     x = y = 0  # координаты
     for row in level:  # вся строка
         for col in row:  # каждый символ
             if col == "-":
-                # создаем блок, заливаем его цветом и рисеум его
+                # создаем блок
                 wall = arcade.Sprite(box, SPRITE_SCALING)
                 wall.center_x = x
                 wall.center_y = y
@@ -80,7 +84,7 @@ def create_lvl(wall_list: arcade.SpriteList, coin_list: arcade.SpriteList, lvl=1
         x = 0  # на каждой новой строчке начинаем с нуля
 
     # Ставим монеты на карту
-    # Create the coins
+    coin_list = arcade.SpriteList()
     for i in range(15):
         # Create the coin instance
         # Coin image from kenney.nl
@@ -92,3 +96,12 @@ def create_lvl(wall_list: arcade.SpriteList, coin_list: arcade.SpriteList, lvl=1
 
         # Add the coin to the lists
         coin_list.append(coin)
+
+    # ДОЛЖНО ГЕНЕРИРОВАТЬСЯ
+    pos_ability = [Position(200, 400, 1), Position(700, 300, 2)]
+    # Ставим способности на карту
+    ability_list = ability_factory(pos_ability)
+    # Ставим врагов
+    enemy_list = create_enemies([1, 2, 3])
+
+    return wall_list, coin_list, ability_list, enemy_list
