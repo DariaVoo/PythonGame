@@ -69,6 +69,7 @@ def create_lvl(lvl=1):
     box = ":resources:images/tiles/boxCrate_double.png" if lvl == 1 else ":resources:images/tiles/brickGrey.png"
 
     wall_list = arcade.SpriteList()
+    # ДОЛЖНО ГЕНЕРИРОВАТЬСЯ
     x = y = 0  # координаты
     for row in level:  # вся строка
         for col in row:  # каждый символ
@@ -85,6 +86,7 @@ def create_lvl(lvl=1):
 
     # Ставим монеты на карту
     coin_list = arcade.SpriteList()
+    # ДОЛЖНО ГЕНЕРИРОВАТЬСЯ
     for i in range(15):
         # Create the coin instance
         # Coin image from kenney.nl
@@ -101,8 +103,9 @@ def create_lvl(lvl=1):
     pos_ability = [Position(200, 400, 1), Position(700, 300, 2), Position(900, 500, 3)]
     # Ставим способности на карту
     ability_list = ability_factory(pos_ability)
-    # Ставим врагов
+    # ДОЛЖНО ГЕНЕРИРОВАТЬСЯ
     pos_enemies = [Position(100, 300, 1), Position(500, 500, 2), Position(900, 700, 3)]
+    # Ставим врагов
     enemy_list = create_enemies(pos_enemies)
 
     return wall_list, coin_list, ability_list, enemy_list
