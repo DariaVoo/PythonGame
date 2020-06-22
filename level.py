@@ -102,6 +102,7 @@ def create_lvl(lvl=1):
     # Ставим способности на карту
     ability_list = ability_factory(pos_ability)
     # Ставим врагов
-    enemy_list = create_enemies([1, 2, 3])
+    pos_enemies = [Position(100, 300, 1), Position(500, 500, 2), Position(900, 700, 3)]
+    enemy_list = create_enemies(pos_enemies)
 
     return wall_list, coin_list, ability_list, enemy_list
