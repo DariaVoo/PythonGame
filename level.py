@@ -98,7 +98,7 @@ def create_lvl(lvl=1):
         coin_list.append(coin)
 
     # ДОЛЖНО ГЕНЕРИРОВАТЬСЯ
-    pos_ability = [Position(200, 400, 1), Position(700, 300, 2)]
+    pos_ability = [Position(200, 400, 1), Position(700, 300, 2), Position(900, 500, 3)]
     # Ставим способности на карту
     ability_list = ability_factory(pos_ability)
     # Ставим врагов

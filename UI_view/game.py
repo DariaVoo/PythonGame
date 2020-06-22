@@ -46,7 +46,7 @@ class GameView(arcade.View):
         self.level = 1
         self.max_level = 2
 
-        # sсroll (move camera)
+        # scroll (move camera)
         self.view_left = 0
         self.view_bottom = 0
 

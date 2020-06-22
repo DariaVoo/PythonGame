@@ -1,19 +1,18 @@
 from ability.ability import Ability
 from ability.explosion import Explosion
-from constants import SPRITE_SCALING_LASER, BULLET_SPEED
+from constants import BULLET_SPEED, SPRITE_SCALING_STAR
 
 
-class Rock(Ability):
+class Star(Ability):
     def __init__(self, player_x, player_y):
-        super().__init__(":resources:images/space_shooter/meteorGrey_tiny1.png", SPRITE_SCALING_LASER,
+        super().__init__(":resources:images/items/star.png", SPRITE_SCALING_STAR,
                          player_x, player_y, BULLET_SPEED)
 
     def clone(self, player_x, player_y):
-        return Rock(player_x, player_y)
+        return Star(player_x, player_y)
 
     def attack(self, hit_list, explosion_texture_list, explosions_list):
         """ Прорисока атаки """
-        # If it did...
         # Make an explosion
         explosion = Explosion(explosion_texture_list)
 

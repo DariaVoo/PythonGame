@@ -2,6 +2,7 @@ import arcade
 
 from ability.bullet import Bullet
 from ability.rock import Rock
+from ability.star import Star
 
 
 def ability_factory(positions: list):
@@ -18,4 +19,6 @@ def create_ability(x: int, y: int, type_ability: int,):
         return Bullet(x, y)
     elif type_ability == 2:
         return Rock(x, y)
+    elif type_ability == 3:
+        return Star(x, y)
 
