@@ -42,7 +42,6 @@ class Player(arcade.Sprite):
         if len(self.abilities):
             # Вызом метода clone конкретного прототипа
             buf = self.abilities[self.active_ability_type].clone(self.center_x, self.center_y)
-
             self.ability_list.append(buf)
 
     def next_ability(self):
@@ -57,8 +56,9 @@ class Player(arcade.Sprite):
             return 0
 
         # Loop through each bullet
+        print(len(self.ability_list))
         for bullet in self.ability_list:
-
+            print("ATTACK")
             # Check this bullet to see if it hit a coin
             hit_list = arcade.check_for_collision_with_list(bullet, enemy_list)
 

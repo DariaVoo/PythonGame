@@ -1,14 +1,10 @@
 import arcade
 import os
 
-# Число для уменьшения изображения
 from UI_view.gameOver import GameOverView
-from ability.abilityFactory import ability_factory
 from constants import GRAVITY
-from enemies.enemyFactory import create_enemies
 from level import create_lvl, END_OF_MAP
 from player import Player
-from position import Position
 from scroll_manage import scroll_manage
 
 
@@ -51,8 +47,7 @@ class GameView(arcade.View):
         self.view_bottom = 0
 
         # Pre-load the animation frames. We don't do this in the __init__
-        # of the explosion sprite because it
-        # takes too long and would cause the game to pause.
+        # of the explosion sprite because it takes too long and would cause the game to pause.
         self.explosion_texture_list = []
 
         columns = 16
@@ -71,10 +66,9 @@ class GameView(arcade.View):
         self.player_list = arcade.SpriteList()
         self.explosions_list = arcade.SpriteList()
 
-        # Set up the player
+        # Создаём игрока
         self.player_sprite = Player()
         self.player_list.append(self.player_sprite)
-        # Set up the enemies
 
         # Создаём уровень
         self.wall_list, self.coin_list, self.ability_list, self.enemy_list = create_lvl(self.level)
@@ -102,7 +96,7 @@ class GameView(arcade.View):
 
         self.player_sprite.ability_list.draw()
 
-        # Draw our score on the screen, scrolling it with the viewport
+        # Рисуем score на экране
         score_text = f"Score: {self.score}"
         arcade.draw_text(score_text, 10 + self.view_left, 10 + self.view_bottom,
                          arcade.csscolor.WHITE, 18)
@@ -146,23 +140,19 @@ class GameView(arcade.View):
         self.player_sprite.ability_list.update()
         self.explosions_list.update()
 
-        # Check each enemy
+        # Движение врагов
         for enemy in self.enemy_list:
             enemy.move(self.wall_list)
-
-        # Move the enemies
         self.enemy_list.update()
 
-        # See if the player hit a worm. If so, game over.
+        # Если игрок столкнулся с врагом game over
         if len(arcade.check_for_collision_with_list(self.player_sprite, self.enemy_list)) > 0:
             self.game_over = True
 
-        # See if we hit any coins
+        # Собрали ли монеты
         coin_hit_list = arcade.check_for_collision_with_list(self.player_sprite,
                                                              self.coin_list)
-        # Loop through each coin we hit (if any) and remove it
         for coin in coin_hit_list:
-            # Remove the coin
             coin.remove_from_sprite_lists()
             self.score += 1
             self.window.total_score += 1
@@ -176,11 +166,9 @@ class GameView(arcade.View):
             if arcade.check_for_collision(weapon, self.player_sprite):
                 self.ability_list.remove(weapon)
                 self.player_sprite.add_ability(weapon)
-                # добавить это свойство в плеера
-
 
         # --- Manage Scrolling ---
-        # Track if we need to change the view port
+        # Нужно ли менять view port
         self.view_left, self.view_bottom = scroll_manage(self.player_sprite,
                                                          self.view_left, self.view_bottom)
 

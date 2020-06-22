@@ -1,1 +1,1 @@
-__all__ = ["enemy", "worm", "enemyFactory"]
+__all__ = ["enemy", "worm", "enemyFactory", "saw", "slime"]
