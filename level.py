@@ -11,11 +11,34 @@ SPRITE_SIZE = int(SPRITE_NATIVE_SIZE * SPRITE_SCALING)
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 
+END_OF_MAP = 25 * 51.2 # ЭТО НУЖНО ИСПРАВИТЬ сейча это просто колво блоков на wall.ghet_width
 lvl1 = [
     "-------------------------",
     "-                       -",
     "-   -                   -",
     "-          -            -",  # и тут лагает
+    "-            --         -",  # здесь лагает почему-то
+    "-      -                 ",
+    "--                       ",
+    "-         -             -",
+    "-              -    --- -",
+    "-            -          -",
+    "-                -      -",
+    "-      ---             --",
+    "-                  -    -",
+    "-   -----------        --",
+    "-                   -   -",
+    "-                -      -",
+    "-                   --  -",
+    "-                        ",
+    "-                       -",
+    "-------------------------"]
+
+lvl2 = [
+    "-------------------------",
+    "-                       -",
+    "-   ---------------     -",
+    "-          ------       -",  # и тут лагает
     "-            --         -",  # здесь лагает почему-то
     "-      -                -",
     "--                      -",
@@ -34,18 +57,21 @@ lvl1 = [
     "-------------------------"]
 
 
-def create_lvl(wall_list: arcade.SpriteList, coin_list: arcade.SpriteList):
+def create_lvl(wall_list: arcade.SpriteList, coin_list: arcade.SpriteList, lvl=1):
     """
     Создание карты уровня. По факту - наполнение wall_list
     !!!! карта строится вверх ногами (если смотреть на массив)
     """
-    level = lvl1
+    level = lvl1 if lvl == 1 else lvl2
+    box = ":resources:images/tiles/boxCrate_double.png" if lvl == 1 else ":resources:images/tiles/brickGrey.png"
+
+    print(len(lvl1[0]))
     x = y = 0  # координаты
     for row in level:  # вся строка
         for col in row:  # каждый символ
             if col == "-":
                 # создаем блок, заливаем его цветом и рисеум его
-                wall = arcade.Sprite(":resources:images/tiles/boxCrate_double.png", SPRITE_SCALING)
+                wall = arcade.Sprite(box, SPRITE_SCALING)
                 wall.center_x = x
                 wall.center_y = y
                 wall_list.append(wall)
@@ -67,11 +93,3 @@ def create_lvl(wall_list: arcade.SpriteList, coin_list: arcade.SpriteList):
 
         # Add the coin to the lists
         coin_list.append(coin)
-
-    # # Draw the walls on the bottom Добавляем землю
-    # for x in range(0, SCREEN_WIDTH, SPRITE_SIZE):
-    #     wall = arcade.Sprite(":resources:images/tiles/grassMid.png", SPRITE_SCALING)
-    #
-    #     wall.bottom = 0
-    #     wall.left = x
-    #     wall_lis

@@ -6,7 +6,7 @@ from UI_view.gameOver import GameOverView
 from ability.abilityFactory import ability_factory
 from constants import GRAVITY
 from enemies.enemyFactory import create_enemies
-from level import create_lvl
+from level import create_lvl, END_OF_MAP
 from player import Player
 from position import Position
 from scroll_manage import scroll_manage
@@ -42,6 +42,9 @@ class GameView(arcade.View):
 
         self.score = 0
         self.game_over = False
+
+        self.level = 1
+        self.max_level = 2
 
         # sсroll (move camera)
         self.view_left = 0
@@ -81,8 +84,8 @@ class GameView(arcade.View):
         self.enemy_list = create_enemies([1, 2, 3])
         self.ability_list = ability_factory(pos_ability)
 
-        # Set up the walls
-        create_lvl(self.wall_list, self.coin_list)
+        # Создаём уровень
+        create_lvl(self.wall_list, self.coin_list, self.level)
 
         # Физический движок для платформера
         self.physics_engine = arcade.PhysicsEnginePlatformer(self.player_sprite, self.wall_list, GRAVITY)
@@ -134,6 +137,18 @@ class GameView(arcade.View):
     def on_update(self, delta_time):
         """ Movement and game logic """
         self.time_taken += delta_time
+
+        # Проверяем перешли ли мы на новый уровень
+        if self.player_sprite.right >= END_OF_MAP:
+            if self.level < self.max_level:
+                self.level += 1
+                create_lvl(self.wall_list, self.coin_list, self.level)
+                self.player_sprite.center_x = 128
+                self.player_sprite.center_y = 64
+                self.player_sprite.change_x = 0
+                self.player_sprite.change_y = 0
+            else:
+                self.game_over = True
 
         self.player_sprite.ability_list.update()
         self.explosions_list.update()
