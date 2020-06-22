@@ -9,6 +9,9 @@ class Rock(Ability):
         super().__init__(":resources:images/space_shooter/meteorGrey_tiny1.png", SPRITE_SCALING_LASER,
                          player_x, player_y, BULLET_SPEED)
 
+    def clone(self, player_x, player_y):
+        return Rock(player_x, player_y)
+
     def attack(self, hit_list, explosion_texture_list, explosions_list):
         """ Прорисока атаки """
         # If it did...

@@ -37,8 +37,9 @@ class Player(arcade.Sprite):
 
     def shot(self):
         if len(self.abilities):
-            buf = copy.deepcopy(self.abilities[self.active_ability_type])
-            buf.set_position_and_speed(self.center_x, self.center_y)
+            # Вызом метода clone конкретного прототипа
+            buf = self.abilities[self.active_ability_type].clone(self.center_x, self.center_y)
+
             self.ability_list.append(buf)
 
     def next_ability(self):

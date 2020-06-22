@@ -12,6 +12,9 @@ class Bullet(Ability):
         # Изображение лазера будет прямое, поэтому угол наклона изображения 0
         self.angle = 0
 
+    def clone(self, player_x, player_y):
+        return Bullet(player_x, player_y)
+
     def attack(self, hit_list, explosion_texture_list, explosions_list):
         """ Прорисока атаки """
         # If it did...
