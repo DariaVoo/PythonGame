@@ -65,7 +65,6 @@ def create_lvl(wall_list: arcade.SpriteList, coin_list: arcade.SpriteList, lvl=1
     level = lvl1 if lvl == 1 else lvl2
     box = ":resources:images/tiles/boxCrate_double.png" if lvl == 1 else ":resources:images/tiles/brickGrey.png"
 
-    print(len(lvl1[0]))
     x = y = 0  # координаты
     for row in level:  # вся строка
         for col in row:  # каждый символ

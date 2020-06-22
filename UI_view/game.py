@@ -119,24 +119,24 @@ class GameView(arcade.View):
         """Called whenever a key is pressed. """
 
         self.player_sprite.move(key, self.physics_engine.can_jump())
-
-    def on_key_release(self, key, modifiers):
-        """Called when the user releases a key. """
-
-        if key == arcade.key.UP or key == arcade.key.DOWN:
-            self.player_sprite.change_y = 0
-        elif key == arcade.key.LEFT or key == arcade.key.RIGHT:
-            self.player_sprite.change_x = 0
-        elif key == arcade.key.SPACE:
+        if key == arcade.key.SPACE:
             self.player_sprite.shot()
         elif key == arcade.key.ESCAPE:
             self.game_over = True
         elif key == arcade.key.ENTER:
             self.player_sprite.next_ability()
 
+    def on_key_release(self, key, modifiers):
+        """Called when the user releases a key. """
+        self.player_sprite.stop(key)
+
+
     def on_update(self, delta_time):
         """ Movement and game logic """
         self.time_taken += delta_time
+
+        # Обновляем игрока используя физический движок
+        self.physics_engine.update()
 
         # Проверяем перешли ли мы на новый уровень
         if self.player_sprite.right >= END_OF_MAP:
@@ -153,15 +153,12 @@ class GameView(arcade.View):
         self.player_sprite.ability_list.update()
         self.explosions_list.update()
 
-        # Move the enemies
-        self.enemy_list.update()
-
         # Check each enemy
         for enemy in self.enemy_list:
             enemy.move(self.wall_list)
 
-        # Обновляем игрока используя физический движок
-        self.physics_engine.update()
+        # Move the enemies
+        self.enemy_list.update()
 
         # See if the player hit a worm. If so, game over.
         if len(arcade.check_for_collision_with_list(self.player_sprite, self.enemy_list)) > 0:

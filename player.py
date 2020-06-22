@@ -1,9 +1,6 @@
 import arcade
-import copy
 
-from ability.bullet import Bullet
-from ability.rock import Rock
-from constants import SPRITE_SCALING, MOVEMENT_SPEED, JUMP_SPEED, SCREEN_HEIGHT, COUNT_TYPE_ENEMY
+from constants import SPRITE_SCALING, MOVEMENT_SPEED, JUMP_SPEED, SCREEN_HEIGHT
 
 
 class Player(arcade.Sprite):
@@ -30,6 +27,12 @@ class Player(arcade.Sprite):
             self.change_x = -MOVEMENT_SPEED
         elif key == arcade.key.RIGHT:
             self.change_x = MOVEMENT_SPEED
+
+    def stop(self, key):
+        if key == arcade.key.UP or key == arcade.key.DOWN:
+            self.change_y = 0
+        elif key == arcade.key.LEFT or key == arcade.key.RIGHT:
+            self.change_x = 0
 
     def add_ability(self, ability):
         self.abilities.append(ability)
