@@ -3,10 +3,12 @@ import os
 
 # Число для уменьшения изображения
 from UI_view.gameOver import GameOverView
+from ability.abilityFactory import ability_factory
 from constants import GRAVITY
 from enemies.enemyFactory import create_enemies
 from level import create_lvl
 from player import Player
+from position import Position
 from scroll_manage import scroll_manage
 
 
@@ -32,7 +34,7 @@ class GameView(arcade.View):
         self.player_list: arcade.SpriteList = None
         self.enemy_list: arcade.SpriteList = None
         self.explosions_list = None
-        self.bullet_list: arcade.SpriteList = None  # -> player
+        self.ability_list: arcade.SpriteList = None  # -> player
 
         # Set up the player
         self.player_sprite: Player = None
@@ -69,11 +71,15 @@ class GameView(arcade.View):
         self.enemy_list = arcade.SpriteList()
         self.explosions_list = arcade.SpriteList()
 
+        # ДОЛЖНО ГЕНЕРИРОВАТЬСЯ
+        pos_ability = [Position(600, 400, 1), Position(700, 300, 2)]
+
         # Set up the player
         self.player_sprite = Player()
         self.player_list.append(self.player_sprite)
         # Set up the enemies
         self.enemy_list = create_enemies([1, 2, 3])
+        self.ability_list = ability_factory(pos_ability)
 
         # Set up the walls
         create_lvl(self.wall_list, self.coin_list)
@@ -97,6 +103,7 @@ class GameView(arcade.View):
         self.player_list.draw()
         self.enemy_list.draw()
         self.explosions_list.draw()
+        self.ability_list.draw()
 
         self.player_sprite.ability_list.draw()
 
@@ -158,6 +165,13 @@ class GameView(arcade.View):
         # Попали ли во врага
         self.score = self.player_sprite.attack(self.enemy_list, self.score,
                                                self.explosion_texture_list, self.explosions_list)
+
+        # Подобрал ли новую способность
+        for weapon in self.ability_list:
+            if arcade.check_for_collision(weapon, self.player_sprite):
+                self.ability_list.remove(weapon)
+                # добавить это свойство в плеера
+
 
         # --- Manage Scrolling ---
         # Track if we need to change the view port

@@ -74,4 +74,4 @@ def create_lvl(wall_list: arcade.SpriteList, coin_list: arcade.SpriteList):
     #
     #     wall.bottom = 0
     #     wall.left = x
-    #     wall_list.append(wall)
+    #     wall_lis
