@@ -72,7 +72,7 @@ class GameView(arcade.View):
         self.explosions_list = arcade.SpriteList()
 
         # ДОЛЖНО ГЕНЕРИРОВАТЬСЯ
-        pos_ability = [Position(600, 400, 1), Position(700, 300, 2)]
+        pos_ability = [Position(200, 400, 1), Position(700, 300, 2)]
 
         # Set up the player
         self.player_sprite = Player()
@@ -125,7 +125,7 @@ class GameView(arcade.View):
         elif key == arcade.key.LEFT or key == arcade.key.RIGHT:
             self.player_sprite.change_x = 0
         elif key == arcade.key.SPACE:
-            self.player_sprite.add_ability()
+            self.player_sprite.shot()
         elif key == arcade.key.ESCAPE:
             self.game_over = True
         elif key == arcade.key.ENTER:
@@ -170,6 +170,7 @@ class GameView(arcade.View):
         for weapon in self.ability_list:
             if arcade.check_for_collision(weapon, self.player_sprite):
                 self.ability_list.remove(weapon)
+                self.player_sprite.add_ability(weapon)
                 # добавить это свойство в плеера
 
 

@@ -1,4 +1,5 @@
 import arcade
+import copy
 
 from ability.bullet import Bullet
 from ability.rock import Rock
@@ -16,6 +17,7 @@ class Player(arcade.Sprite):
         self.center_x = x
         self.center_y = y
         self.ability_list = arcade.SpriteList()
+        self.abilities = arcade.SpriteList()
         self.active_ability_type = 0
 
     def move(self, key, jump):
@@ -29,17 +31,19 @@ class Player(arcade.Sprite):
         elif key == arcade.key.RIGHT:
             self.change_x = MOVEMENT_SPEED
 
-    def add_ability(self):
-        if self.active_ability_type == 0:
-            bullet = Bullet(self.center_x, self.center_y)
-            self.ability_list.append(bullet)
-        elif self.active_ability_type == 1:
-            bullet2 = Rock(self.center_x, self.center_y)
-            self.ability_list.append(bullet2)
+    def add_ability(self, ability):
+        self.abilities.append(ability)
+        self.active_ability_type = 0
+
+    def shot(self):
+        if len(self.abilities):
+            buf = copy.deepcopy(self.abilities[self.active_ability_type])
+            buf.set_position_and_speed(self.center_x, self.center_y)
+            self.ability_list.append(buf)
 
     def next_ability(self):
         index = self.active_ability_type + 1
-        if index < COUNT_TYPE_ENEMY:
+        if index < len(self.abilities):
             self.active_ability_type = index
         else:
             self.active_ability_type = 0
