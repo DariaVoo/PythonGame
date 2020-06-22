@@ -3,9 +3,9 @@ import os
 
 from UI_view.gameOver import GameOverView
 from constants import GRAVITY
-from level import create_lvl, END_OF_MAP
-from player import Player
-from scroll_manage import scroll_manage
+from levels.level import create_lvl, END_OF_MAP
+from logic.player import Player
+from logic.scroll_manage import scroll_manage
 
 
 class GameView(arcade.View):
@@ -30,7 +30,7 @@ class GameView(arcade.View):
         self.player_list: arcade.SpriteList = None
         self.enemy_list: arcade.SpriteList = None
         self.explosions_list = None
-        self.ability_list: arcade.SpriteList = None  # -> player
+        self.ability_list: arcade.SpriteList = None
 
         # Set up the player
         self.player_sprite: Player = None

@@ -56,16 +56,13 @@ class Player(arcade.Sprite):
             return 0
 
         # Loop through each bullet
-        print(len(self.ability_list))
         for bullet in self.ability_list:
-            print("ATTACK")
             # Check this bullet to see if it hit a coin
             hit_list = arcade.check_for_collision_with_list(bullet, enemy_list)
 
             # If it did, get rid of the bullet
             if len(hit_list) > 0:
                 bullet.attack(hit_list, explosion_texture_list, explosions_list)
-
                 # Get rid of the bullet
                 bullet.remove_from_sprite_lists()
 
@@ -73,9 +70,9 @@ class Player(arcade.Sprite):
             for enemy in hit_list:
                 enemy.remove_from_sprite_lists()
                 score += 5
-
-            # If the bullet flies off-screen, remove it.
-            if bullet.bottom > SCREEN_HEIGHT:
-                bullet.remove_from_sprite_lists()
+            # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            # Удаляем вылетившие за уровень пули
+            # if bullet.bottom > SCREEN_HEIGHT:
+            #     bullet.remove_from_sprite_lists()
 
         return score

@@ -1,7 +1,7 @@
 import arcade
 
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT
-from UI_view.game import GameView
+from logic.game import GameView
 
 
 class InstructionView(arcade.View):

@@ -38,7 +38,7 @@ class GameOverView(arcade.View):
 
     def on_mouse_press(self, _x, _y, _button, _modifiers):
         """ If the user presses the mouse button, re-start the game. """
-        from UI_view.game import GameView
+        from logic.game import GameView
         game_view = GameView()
         game_view.setup()
         self.window.show_view(game_view)
