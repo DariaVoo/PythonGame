@@ -55,6 +55,7 @@ class Player(arcade.Sprite):
         if len(self.ability_list) == 0:
             return 0
 
+        score = 0
         # Loop through each bullet
         for bullet in self.ability_list:
             # Check this bullet to see if it hit a coin

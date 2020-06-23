@@ -119,14 +119,12 @@ def genlvl(box):
     for row in lvl:  # вся строка
         for col in row:  # каждый символ
             if col == "*":
-                # создаем блок
                 coin = arcade.Sprite(":resources:images/items/coinGold.png", SPRITE_SCALING_COIN)
-                coin.center_x = x
-                coin.center_y = y
-                coin_list.append(wall)
-
-            x += coin._get_width()  # блоки платформы ставятся на ширине блоков
-        y += coin._get_height()  # то же самое и с высотой
+                coin.center_x = x * scale_cords
+                coin.center_y = y * scale_cords
+                coin_list.append(coin)
+            x += 1  # блоки платформы ставятся на ширине блоков
+        y += 1  # то же самое и с высотой
         x = 0  # на каждой новой строчке начинаем с нуля
 
     x = y = 0  # координаты

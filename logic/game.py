@@ -158,8 +158,9 @@ class GameView(arcade.View):
             self.window.total_score += 1
 
         # Попали ли во врага
-        self.score = self.player_sprite.attack(self.enemy_list, self.score,
+        self.score += self.player_sprite.attack(self.enemy_list, self.score,
                                                self.explosion_texture_list, self.explosions_list)
+        self.window.total_score  = self.score
 
         # Подобрал ли новую способность
         for weapon in self.ability_list:
