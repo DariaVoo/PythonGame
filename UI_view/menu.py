@@ -24,7 +24,7 @@ class MenuView(arcade.View):
         # Выгрузка изображения на экран
         # arcade.draw_lrwh_rectangle_textured(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, self.background)
 
-        arcade.draw_text("Menu Screen", SCREEN_WIDTH/2, SCREEN_HEIGHT/2,
+        arcade.draw_text("Python Game", SCREEN_WIDTH/2, SCREEN_HEIGHT/2,
                          arcade.color.BLACK, font_size=50, anchor_x="center")
         arcade.draw_text("Click to advance", SCREEN_WIDTH/2, SCREEN_HEIGHT/2-75,
                          arcade.color.GRAY, font_size=20, anchor_x="center")

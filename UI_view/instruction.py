@@ -15,7 +15,7 @@ class InstructionView(arcade.View):
 
     def on_draw(self):
         arcade.start_render()
-        arcade.draw_text("Instructions Screen", SCREEN_WIDTH/2, SCREEN_HEIGHT/2,
+        arcade.draw_text("Instructions", SCREEN_WIDTH/2, SCREEN_HEIGHT/2,
                          arcade.color.BLACK, font_size=50, anchor_x="center")
         arcade.draw_text("Press Escape to out\nPress Enter to change type ability\n\tClick to advance",
                          SCREEN_WIDTH/2, SCREEN_HEIGHT/2-75,
