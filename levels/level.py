@@ -66,21 +66,18 @@ def create_lvl(lvl=1):
     Создание карты уровня. По факту - наполнение wall_list
     !!!! карта строится вверх ногами (если смотреть на массив)
     """
-    level = lvl1 if lvl == 1 else lvl2
-    lvls = {
+    levels = {
         1: ":resources:images/tiles/boxCrate_double.png",
         2: ":resources:images/tiles/brickGrey.png",
         3: ":resources:images/tiles/planetHalf.png",
         4: ":resources:images/tiles/snowHalf.png",
-        5: ":resources:images/tiles/brickGrey.png",
-        6: ":resources:images/tiles/brickGrey.png",
-        7: ":resources:images/tiles/brickGrey.png",
-        8: ":resources:images/tiles/brickGrey.png",
-        9: ":resources:images/tiles/brickGrey.png",
-        10: ":resources:images/tiles/brickGrey.png",
+        5: ":resources:images/tiles/stoneHalf.png",
+        6: ":resources:images/tiles/sandHalf.png",
+        7: ":resources:images/tiles/dirtHalf.png",
+        8: ":resources:images/tiles/brickBrown.png",
+        9: ":resources:images/tiles/bridgeA.png",
     }
-
-    box = ":resources:images/tiles/boxCrate_double.png" if lvl == 1 else ":resources:images/tiles/brickGrey.png"
+    box = levels.get(lvl % 10)
 
     return genlvl(box)
 
