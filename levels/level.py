@@ -1,13 +1,6 @@
-import random
-
-import arcade
-
-from ability.abilityFactory import ability_factory
-from constants import SPRITE_SCALING_COIN
-from enemies.enemyFactory import create_enemies
 from levels import genlvl
 from levels.genlvl import genlvl
-from position import Position
+
 
 SPRITE_SCALING = 0.4
 # Для enemy
@@ -64,7 +57,6 @@ lvl2 = [
 def create_lvl(lvl=1):
     """
     Создание карты уровня. По факту - наполнение wall_list
-    !!!! карта строится вверх ногами (если смотреть на массив)
     """
     levels = {
         1: ":resources:images/tiles/boxCrate_double.png",

@@ -5,12 +5,14 @@ from ability.rock import Rock
 from ability.star import Star
 
 
-def ability_factory(positions: list):
+def ability_factory(positions: list, wall_list):
     ability_list = arcade.SpriteList()
 
     # (x, y, type)
     for pos in positions:
-        ability_list.append(create_ability(pos.x, pos.y, pos.type_sprite))
+        abil = create_ability(pos.x, pos.y, pos.type_sprite)
+        if len(arcade.check_for_collision_with_list(abil, wall_list)) == 0:
+            ability_list.append(abil)
     return ability_list
 
 

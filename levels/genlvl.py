@@ -12,9 +12,8 @@ from position import Position
 def genlvl(box):
     start_time = datetime.now()
 
-    # lvl_width = random.randint(20, 50)
     lvl_height = random.randint(20, 50)
-    lvl_width = 35
+    lvl_width = 29
 
     lvl = []
     strings = []
@@ -50,8 +49,6 @@ def genlvl(box):
     lvl.append(list(strings))
     strings.clear()
 
-    print("pustix", cf)
-
     block_count = cf / 5
     i = 0
     while i < block_count:
@@ -59,9 +56,6 @@ def genlvl(box):
         x_block = random.randint(2, len(lvl[1]) - 1)
         lvl[y_block][x_block] = "-"
         i = i + 1
-
-    print(lvl[1][1])
-    print(y_block, x_block, lvl[y_block])
 
     coin_count = cf / 8
     i = 0
@@ -71,6 +65,7 @@ def genlvl(box):
         if lvl[y_coin][x_coin] != '-':
             lvl[y_coin][x_coin] = '*'
         i = i + 1
+
     enemy_count = cf / 25
     i = 0
     while i < enemy_count:
@@ -79,9 +74,9 @@ def genlvl(box):
         if lvl[y_enemy][x_enemy] != '-':
             lvl[y_enemy][x_enemy] = '%'
         i = i + 1
-    abi_count = cf / 15
-    i = 0
 
+    abi_count = 3
+    i = 0
     while i < abi_count:
         y_abi = random.randint(2, len(lvl) - 1)
         x_abi = random.randint(2, len(lvl[1]) - 1)
@@ -89,14 +84,14 @@ def genlvl(box):
             lvl[y_abi][x_abi] = '#'
         i = i + 1
 
-    lvl[lvl_height - 2][lvl_width - 1] = ' '
+    lvl[2][lvl_width - 1] = ' '
+    lvl[2][lvl_width - 2] = ' '
+
 
     i = 0
     while i < lvl_height:
         lvl[i] = ''.join(lvl[i])
         i = i + 1
-
-    print(datetime.now() - start_time)
 
     wall_list = arcade.SpriteList()
     coin_list = arcade.SpriteList()
@@ -139,10 +134,12 @@ def genlvl(box):
         for col in row:  # каждый символ
             if col == "%":
                 # добавляем позицию врака
-                x = scale_cords * x
-                y = scale_cords * y
+                lvl_width_pix = lvl_width * scale_cords
+                lvl_height_pix = lvl_height * scale_cords
+                x = random.randint(0, int(lvl_width_pix))
+                y = random.randint(0, int(lvl_height_pix))
                 type = random.randint(1, 3)
-                pos_enemy.append(Position(x, y, type))
+                pos_enemy.append(Position(int(x), int(y), type))
 
             x += 1
         y += 1  # то же самое и с высотой
@@ -153,14 +150,14 @@ def genlvl(box):
         for col in row:  # каждый символ
             if col == "#":
                 # добавляем позицию абилки
-                x = scale_cords * x
-                y = scale_cords * y
+                x_pos = scale_cords * x
+                y_pos = scale_cords * y
                 type = random.randint(1, 3)
-                pos_ability.append(Position(x, y, type))
+                pos_ability.append(Position(int(x_pos), int(y_pos), type))
             x += 1
         y += 1  # то же самое и с высотой
         x = 0  # на каждой новой строчке начинаем с нуля
 
-    ability_list = ability_factory(pos_ability)
-    enemy_list = create_enemies(pos_enemy)
+    ability_list = ability_factory(pos_ability, wall_list)
+    enemy_list = create_enemies(pos_enemy, wall_list)
     return wall_list, coin_list, ability_list, enemy_list

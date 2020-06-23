@@ -5,12 +5,14 @@ from enemies.slime import Slime
 from enemies.worm import Worm
 
 
-def create_enemies(positions: list):
+def create_enemies(positions: list, wall_list):
     enemy_list = arcade.SpriteList()
 
     # (x, y, type)
     for pos in positions:
-        enemy_list.append(create_ability(pos.x, pos.y, pos.type_sprite))
+        enemy = create_ability(pos.x, pos.y, pos.type_sprite)
+        if len(arcade.check_for_collision_with_list(enemy, wall_list)) == 0:
+            enemy_list.append(enemy)
     return enemy_list
 
 
