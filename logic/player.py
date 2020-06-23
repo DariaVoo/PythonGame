@@ -9,8 +9,8 @@ class Player(arcade.Sprite):
     """
 
     def __init__(self, x=600, y=400):
-        super().__init__(":resources:images/animated_characters/female_person/femalePerson_idle.png",
-                         SPRITE_SCALING)
+        super().__init__(":resources:images/alien/alienBlue_jump.png",
+                         0.3)
         self.center_x = x
         self.center_y = y
         self.ability_list = arcade.SpriteList()
