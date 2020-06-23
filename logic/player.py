@@ -1,6 +1,6 @@
 import arcade
 
-from constants import SPRITE_SCALING, MOVEMENT_SPEED, JUMP_SPEED, SCREEN_HEIGHT
+from constants import SPRITE_SCALING, MOVEMENT_SPEED, JUMP_SPEED, SCREEN_HEIGHT, END_OF_MAP
 
 
 class Player(arcade.Sprite):
@@ -70,9 +70,9 @@ class Player(arcade.Sprite):
             for enemy in hit_list:
                 enemy.remove_from_sprite_lists()
                 score += 5
-            # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
             # Удаляем вылетившие за уровень пули
-            # if bullet.bottom > SCREEN_HEIGHT:
-            #     bullet.remove_from_sprite_lists()
+            if bullet.center_x > END_OF_MAP:
+                bullet.remove_from_sprite_lists()
 
         return score
