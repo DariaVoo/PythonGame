@@ -1,13 +1,12 @@
 import arcade
 
-from constants import SPRITE_SCALING, MOVEMENT_SPEED, JUMP_SPEED, SCREEN_HEIGHT, END_OF_MAP
+from constants import MOVEMENT_SPEED, JUMP_SPEED, END_OF_MAP
 
 
 class Player(arcade.Sprite):
     """
     @x, @y - start position
     """
-
     def __init__(self, x=600, y=400):
         super().__init__(":resources:images/alien/alienBlue_jump.png",
                          0.3)

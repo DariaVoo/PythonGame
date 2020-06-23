@@ -10,8 +10,6 @@ from position import Position
 
 
 def genlvl(box):
-    start_time = datetime.now()
-
     lvl_height = random.randint(20, 50)
     lvl_width = 29
 
