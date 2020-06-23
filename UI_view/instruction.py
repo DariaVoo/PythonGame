@@ -1,3 +1,5 @@
+import os
+
 import arcade
 
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT
@@ -5,6 +7,15 @@ from logic.game import GameView
 
 
 class InstructionView(arcade.View):
+    def __init__(self):
+        super().__init__()
+        # Background image will be stored in this variable
+        self.background = None
+
+        img_path = os.path.dirname(os.path.abspath(__file__))
+        img_path += "/instruction.jpg"
+        self.background = arcade.load_texture(img_path)
+
     def on_show(self):
         """ This is run once when we switch to this view """
         arcade.set_background_color(arcade.csscolor.DARK_SLATE_BLUE)
@@ -15,11 +26,8 @@ class InstructionView(arcade.View):
 
     def on_draw(self):
         arcade.start_render()
-        arcade.draw_text("Instructions", SCREEN_WIDTH/2, SCREEN_HEIGHT/2,
-                         arcade.color.BLACK, font_size=50, anchor_x="center")
-        arcade.draw_text("Press Escape to out\nPress Enter to change type ability\n\tClick to advance",
-                         SCREEN_WIDTH/2, SCREEN_HEIGHT/2-75,
-                         arcade.color.GRAY, font_size=20, anchor_x="center")
+        arcade.draw_lrwh_rectangle_textured(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, self.background)
+
 
     def on_mouse_press(self, _x, _y, _button, _modifiers):
         game_view = GameView()
