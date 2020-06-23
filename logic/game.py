@@ -2,8 +2,8 @@ import arcade
 import os
 
 from UI_view.gameOver import GameOverView
-from constants import GRAVITY
-from levels.level import create_lvl, END_OF_MAP
+from constants import GRAVITY, END_OF_MAP
+from levels.level import create_lvl
 from logic.player import Player
 from logic.scroll_manage import scroll_manage
 
@@ -40,7 +40,7 @@ class GameView(arcade.View):
         self.game_over = False
 
         self.level = 1
-        self.max_level = 2
+        self.max_level = 50
 
         # scroll (move camera)
         self.view_left = 0
