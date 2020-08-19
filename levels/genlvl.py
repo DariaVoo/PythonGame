@@ -16,9 +16,6 @@ def genlvl(box):
     lvl = []
     strings = []
 
-    print('ширина уровня :', lvl_width)
-    print('высота уровня :', lvl_height)
-
     i = 0
     cf = 0
     while i < lvl_width:
